@@ -1,0 +1,18 @@
+- Compilar os fontes abaixo no ambiente normal(PRODUCAO OU HOMOLOGACAO) e no seu respectivo ambiente de WS:
+
+PTNAPR
+WFW120P
+MT160WF
+WFENVMSG
+MT150END
+MTA120E
+WFENVCOT
+MT150ROT
+
+- O fonte PTNRESCOT deve ser deletado de ambos os ambientes supracitados.
+
+- Atualizar os arquivos HTML na pasta \workflow\modelos\ abaixo do rootpath configurado para o Protheus.
+
+- Appendar via APSDU os registros contidos no arquivo WF2_NOVACENTRALWS.DBF
+
+- Appendar via APSDU os registros contidos no arquivo SX3_NOVACENTRALWS.DBF e atualizar manualmente a tabela SC7 para manter a paridade entre top e banco, ou criar o campo manualmente via configurador conforme a documentação técnica anexa.

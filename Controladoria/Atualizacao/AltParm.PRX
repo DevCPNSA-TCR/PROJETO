@@ -1,0 +1,77 @@
+*---------------------------------------------------------------------------*
+* Autor : Fabio Flores Regueira                         | Data : 21/08/2012 *
+*---------------------------------------------------------------------------*
+* Descricao : Rotina de Alteracao dos paramentros MV_DATAFIN , MV_DATAFIS e *
+*           :                                                               *
+*---------------------------------------------------------------------------*
+* Partida   : Menu do Usuario                                               *
+*---------------------------------------------------------------------------*
+
+#include "rwmake.ch"
+
+*--------------------*
+User Function ALTPARM()
+*--------------------* 
+    
+  //xID := GETMV("MV_XUSERLB")  // parametro utilizado para informar o nome do usuario responsavel palo bloqueio e liberação das datas de lançamentos. 
+  xID := GETMV("MV_XIDUSER")    // parametro utilizado para informa o id do usuario responsavel pelo bloqueio e liberação das datas de lançamentos. 
+    
+  xAchou := .F.
+   
+  if  alltrim(__CUSERID) $ alltrim(xID) 
+       xAchou := .T. 
+  endif 
+
+  
+  /*                 
+  PswOrder(3)
+  If PswSeek(c_Senha,.T.)
+     aUser := PswRet(1)
+     If xID == Upper(AllTrim(aUser[1,2]))
+        xAchou := .T.
+     EndIf
+  EndIf
+  */ 
+  
+  
+  If !xAchou
+
+     MsgBox("Usuário sem autorização para utilizar esta rotina.","Atencao","STOP")
+
+  Else
+
+     xDATAFIN := GETMV("MV_DATAFIN")
+     xDATAFIS := GETMV("MV_DATAFIS")
+     xDATAULMES := GETMV("MV_ULMES")
+
+     @ 164,257 To 368,740 Dialog oDlg2 Title OemToAnsi("Lib/Bloq Datas - Alteracao de Parametros")
+     @ 004,005 To 071,235
+     @ 015,012 Say OemToAnsi("Bloq. p/ lanctos Financeiros com data inferior à:") Size 125,8          
+     @ 032,012 Say OemToAnsi("Bloq. p/ lanctos Fiscais com data inferior ou igual à:") Size 125,8          
+     @ 049,012 Say OemToAnsi("Blq\Desblq a Data do ultimo fechamento do estoque:") Size 125,8
+     
+     @ 015,140 Get xDATAFIN Size 76,10
+     @ 032,140 Get xDATAFIS Size 76,10
+     @ 049,140 Get xDATAULMES Size 76,10
+     
+     @ 077,155 BmpButton Type 1 Action fGrava()
+     @ 077,195 BmpButton Type 2 Action Close(oDlg2)
+     Activate Dialog oDlg2 Centered
+
+  EndIf
+  
+Return
+
+*----------------------*
+Static Function fGrava()
+*----------------------*
+
+  PutMV("MV_DATAFIN",xDATAFIN)
+  PutMV("MV_DATAFIS",xDATAFIS)
+  PutMV("MV_ULMES", XDATAULMES)
+  
+  MsgBox("Parametros atualizados com sucesso!","Sucesso","ALERT")
+
+  Close(oDlg2)
+
+Return
